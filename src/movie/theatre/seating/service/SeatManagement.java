@@ -36,21 +36,9 @@ public class SeatManagement {
 		int group = seatCount;
 		int output;
 		if (seatCount <=0) {
-			return 1;
+			return -2;
 		}
 		if (numberOfSeats >= seatCount) {
-			if (group > 20) {
-				while (group > 20) {
-					output = assignSeats(rno, 20,remainingSeats);
-					group -= 20;
-				}
-				output = assignSeats(rno, group,remainingSeats);
-			} else {
-				output = assignSeats(rno, group,remainingSeats);
-			}		
-			return output;		
-		}
-		else if(oddNumberOfSeats>=seatCount) {
 			if (group > 20) {
 				while (group > 20) {
 					output = assignSeats(rno, 20,oddSeats);
@@ -59,6 +47,20 @@ public class SeatManagement {
 				output = assignSeats(rno, group,oddSeats);
 			} else {
 				output = assignSeats(rno, group,oddSeats);
+			}		
+			return output;		
+		}
+
+		else if(oddNumberOfSeats>=seatCount) {
+
+			if (group > 20) {
+				while (group > 20) {
+					output = assignSeats(rno, 20,remainingSeats);
+					group -= 20;
+				}
+				output = assignSeats(rno, group,remainingSeats);
+			} else {
+				output = assignSeats(rno, group,remainingSeats);
 
 			}
 			return output;
@@ -70,7 +72,7 @@ public class SeatManagement {
 	}
 
 	private int assignSeats(String rno, int seatsToBook,int remainingSeats[]) {
-		int r=0,c = 0;
+		int r=rows-1,c = 0;
 		while (r >= 0 && r < rows && seatsToBook >0) {
 			if (remainingSeats[r] >= seatsToBook) {
 				for (; c < 20 && seatsToBook > 0; c++) {
@@ -86,10 +88,10 @@ public class SeatManagement {
 						}
 						remainingSeats[r]--;
 						if(r%2==0) {
-							numberOfSeats--;
+							oddNumberOfSeats--;
 						}
 						else {
-							oddNumberOfSeats--;
+							numberOfSeats--;
 						}
 						seatsToBook--;
 					}
@@ -99,35 +101,35 @@ public class SeatManagement {
 			if (seatsToBook == 0) {
 				if (c+3<20) {
 					for(int i = c;i<=c+2;i++) {
-						seats[r][i] = "NA";
+						seats[r][i] = "COVID";
 
 						remainingSeats[r]--;
 						if(r%2==0) {
-							numberOfSeats--;
+							oddNumberOfSeats--;
 						}
 						else {
-							oddNumberOfSeats--;
+							numberOfSeats--;
 						}
 					}
 				}
 				else {
 					for(int i=19;i>=c;i--) {
-						seats[r][i] = "NA";
+						seats[r][i] = "COVID";
 						remainingSeats[r]--;
 						if(r%2==0) {
-							numberOfSeats--;
+							oddNumberOfSeats--;
 						}
 						else {
-							oddNumberOfSeats--;
+							numberOfSeats--;
 						}
 					}
 				}
 				return 0;
 			} 
-			r+=1;
+			r-=1;
 
 		}
-		int i  =0;
+		int i = rows-1;
 		while (i >= 0 && i < rows) {
 			if (remainingSeats[i] > 0) {
 				for (int j = 19; seats[i][j] == null; j--) {
@@ -142,10 +144,10 @@ public class SeatManagement {
 					}
 					seatsToBook--;
 					if(i%2==0) {
-						numberOfSeats--;
+						oddNumberOfSeats--;
 					}
 					else {
-						oddNumberOfSeats--;
+						numberOfSeats--;
 					}
 					remainingSeats[i]--;
 
@@ -155,7 +157,7 @@ public class SeatManagement {
 
 				}
 			}
-			i+=1;
+			i-=1;
 		}
 		return 0;
 
@@ -175,6 +177,10 @@ public class SeatManagement {
 
 	public int getNumberOfSeats() {
 		return numberOfSeats+oddNumberOfSeats;
+	}
+
+	public String[][] getSeats(){
+		return seats;
 	}
 
 }

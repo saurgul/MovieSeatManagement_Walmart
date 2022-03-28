@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.Arrays;
 
 public class FileProcessingUtil {
 	private String filename;
@@ -53,13 +54,30 @@ public class FileProcessingUtil {
 		BufferedWriter wr = null;
 		try {
 			wr = new BufferedWriter(new FileWriter("output.txt"));
-			Iterator<Entry<String, ArrayList<String>>> itr = servedReq.entrySet()
-					.iterator();
+			Iterator<Entry<String, ArrayList<String>>> itr = servedReq.entrySet().iterator();
+			
 			while (itr.hasNext()) {
 				Entry<String, ArrayList<String>> pairs = itr.next();
 				String str = pairs.getKey() + " " + pairs.getValue();
 				System.out.print(str + "\n");
 				wr.write(str + "\n");
+			}
+			wr.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void createTheatreMap(String[][] seats, String rqo){
+		//System.out.println(Arrays.deepToString(seats));
+		BufferedWriter wr = null;
+		try {
+			wr = new BufferedWriter(new FileWriter("Output_Maps/output_map_"+rqo+".txt"));
+			
+			for (String abc[]: seats){
+				//System.out.print(Arrays.deepToString(abc) + "\n");
+				wr.write(Arrays.deepToString(abc) + "\n");
 			}
 			wr.close();
 		} catch (IOException e) {
